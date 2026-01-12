@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(valueListenable: darkModeNotifier, builder: (context, value, child) {
       return MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Ukol škola aplikace',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,
