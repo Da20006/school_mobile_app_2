@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'calculator_screen.dart';
-import 'notes_screen.dart';
-import 'about_screen.dart';
-import 'speed_screen.dart';
-import './notifier.dart';
+import 'view/screen/calculator/calculator_screen.dart';
+import 'view/screen/notes/notes_screen.dart';
+import 'view/screen/about/about_screen.dart';
+import 'view/screen/speed/speed_screen.dart';
+import 'data/notifier.dart';
 
 void main() {
   runApp(const MyApp());

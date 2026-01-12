@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ukol_skola_2/calculator_history_screen.dart';
-import './notifier.dart';
+import 'package:ukol_skola_2/view/screen/calculator/calculator_history_screen.dart';
+import '../../../data/notifier.dart';
 
 class CalculatorScreen extends StatefulWidget {
   const CalculatorScreen({super.key});

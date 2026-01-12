@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ukol_skola_2/speed_history_screen.dart';
+import 'package:ukol_skola_2/view/screen/speed/speed_history_screen.dart';
 
 class SpeedScreen extends StatefulWidget {
   const SpeedScreen({super.key});
