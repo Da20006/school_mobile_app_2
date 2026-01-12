@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ukol_skola_2/calculator_history_screen.dart';
+import './notifier.dart';
 
 class CalculatorScreen extends StatefulWidget {
   const CalculatorScreen({super.key});
@@ -30,9 +31,6 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 
   Future<void> _saveState() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('calculator_a', _controllerA.text);
-    await prefs.setString('calculator_b', _controllerB.text);
-    await prefs.setString('calculator_result', _result);
     await prefs.setStringList('calculator_history', _history);
   }
 
@@ -104,10 +102,38 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         appBar: AppBar(
           title: const Text('Kalkulačka'),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.history),
-              onPressed: _openHistory,
-            ),
+            ValueListenableBuilder(valueListenable: darkModeNotifier, builder: (context, value, child) {
+              return PopupMenuButton<String>(
+                icon: const Icon(Icons.more_vert),
+                onSelected: (value) {
+                  if (value == 'open_disk') {
+                    _openHistory();
+                  } else if (value == 'toggle_light') {
+                    darkModeNotifier.value = !darkModeNotifier.value;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Přepnuto na ${darkModeNotifier.value ? 'dark' : 'light'} mode')),
+                    );
+                    // Actual theme toggling should be implemented at app level (e.g. via Provider, InheritedWidget or passing a callback).
+                  }
+                },
+                itemBuilder: (context) => [
+                  const PopupMenuItem(
+                    value: 'open_disk',
+                    child: ListTile(
+                      leading: Icon(Icons.history),
+                      title: Text('Otevřít historii'),
+                    ),
+                  ),
+                  const PopupMenuItem(
+                    value: 'toggle_light',
+                    child: ListTile(
+                      leading: Icon(Icons.light_mode),
+                      title: Text('Přepnout light mode'),
+                    ),
+                  ),
+                ],
+              );
+            })
           ],
         ),
         body: Padding(
@@ -123,7 +149,6 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   labelText: 'Číslo A',
                   border: OutlineInputBorder(),
                 ),
-                onChanged: (_) => _saveInput(),
               ),
               const SizedBox(height: 16),
               TextField(
@@ -134,7 +159,6 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   labelText: 'Číslo B',
                   border: OutlineInputBorder(),
                 ),
-                onChanged: (_) => _saveInput(),
               ),
               const SizedBox(height: 24),
               Row(
@@ -162,13 +186,6 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     );
   }
 
-  Future<void> _saveInput() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('calculator_a', _controllerA.text);
-    await prefs.setString('calculator_b', _controllerB.text);
-  }
-
-  @override
   void dispose() {
     _controllerA.dispose();
     _controllerB.dispose();

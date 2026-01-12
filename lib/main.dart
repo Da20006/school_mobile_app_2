@@ -3,6 +3,7 @@ import 'calculator_screen.dart';
 import 'notes_screen.dart';
 import 'about_screen.dart';
 import 'speed_screen.dart';
+import './notifier.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,16 +14,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        brightness: Brightness.dark,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: const MyHomePage(),
-    );
+    return ValueListenableBuilder(valueListenable: darkModeNotifier, builder: (context, value, child) {
+      return MaterialApp(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          brightness: (value) ? Brightness.dark : Brightness.light,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: MyHomePage(),
+      );
+    });
   }
 }
 
